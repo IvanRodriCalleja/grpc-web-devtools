@@ -1,0 +1,28 @@
+{
+  "name": "grpc-web-devtools-example",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "@botchris/grpc-web-mock": "^0.0.7",
+    "@cloudnc/grpc-web-testing-toolbox": "^2.2.0",
+    "@grpc/grpc-js": "^1.8.20",
+    "@types/node": "20.4.5",
+    "@types/react": "18.2.17",
+    "@types/react-dom": "18.2.7",
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.12",
+    "google-protobuf": "^3.21.2",
+    "grpc-web": "^1.4.2",
+    "next": "13.4.12",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "typescript": "5.1.6"
+  }
+}
