@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "lib": ["es2021", "dom"],
+    "skipLibCheck": true,
+    "incremental": true,
+    "strict": true,
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "noEmit": true,
+    "downlevelIteration": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+  },
+  "exclude": ["node_modules"],
+  "include": [
+    "**/*.ts",
+    "**/*.tsx"
+  ]
+}

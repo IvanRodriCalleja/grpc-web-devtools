@@ -1,0 +1,26 @@
+{
+  "name": "grpc-web-devtools",
+  "version": "1.0.0",
+  "description": "",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["src/contentScript/grpcWebRegister.ts"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "icons": {
+    "16": "assets/icon-ag.png",
+    "32": "assets/icon-ag.png",
+    "48": "assets/icon-ag.png",
+    "128": "assets/icon-ag.png"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["src/contentScript/grpcWebRegister/grpcWebInterceptor.ts"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

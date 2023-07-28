@@ -1,0 +1,36 @@
+{
+	"editor.formatOnSave": false,
+	"editor.autoIndent": "full",
+	"editor.formatOnPaste": false,
+	"prettier.singleQuote": true,
+	"typescript.surveys.enabled": false,
+	"files.eol": "\n",
+	"eslint.validate":  [
+		"javascript",
+		"javascriptreact",
+		"typescript",
+		"typescriptreact"
+	],
+	"[javascript]":  {
+		"editor.formatOnSave":  false,
+	},
+	"[javascriptreact]":  {
+		"editor.formatOnSave":  false,
+	},
+	"[typescript]":  {
+		"editor.formatOnSave":  false,
+	},
+	"[typescriptreact]":  {
+		"editor.formatOnSave":  false,
+	},
+	"editor.codeActionsOnSave": {
+		"source.fixAll.eslint": true
+	},
+	"explorer.fileNesting.enabled": true,
+	"explorer.fileNesting.patterns": {
+		"*.jsx": "$(capture).js, $(capture).spec.jsx",
+		"*.tsx": "$(capture).ts, $(capture).spec.tsx",
+    	"*.ts": "$(capture).ts, $(capture).spec.ts",
+		"package.json": "yarn.lock, .editorconfig, .prettierrc, .prettierignore, .eslintrc, .eslintignore"
+	}
+}
