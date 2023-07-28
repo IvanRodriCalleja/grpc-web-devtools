@@ -1,0 +1,62 @@
+name: 'ci/github: grpc-web-devtools-example' 
+on:
+  pull_request:
+  workflow_dispatch:
+jobs:
+  typecheck:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.10.0]
+    steps:
+    - name: 🛎️ Checkout
+      uses: actions/checkout@v3
+
+    - name: 🔫 Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+      
+    - name: 📦 Cache
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: 'example/node_modules'
+        key: ${{ runner.os }}-example-${{ hashFiles('example/yarn.lock') }}
+
+    - name: 💿 Install dependencies
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
+      working-directory: ./example
+      run: yarn install --frozen-lockfile
+    - name: 🌀 Run typechecker
+      working-directory: ./example
+      run: yarn tsc
+
+  lint:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.10.0]
+    steps:
+    - name: 🛎️ Checkout
+      uses: actions/checkout@v3
+
+    - name: 🔫 Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v2
+      with:
+        node-version: ${{ matrix.node-version }}
+      
+    - name: 📦 Cache
+      uses: actions/cache@v2
+      id: yarn-cache
+      with:
+        path: 'example/node_modules'
+        key: ${{ runner.os }}-example-${{ hashFiles('example/yarn.lock') }}
+
+    - name: 💿 Install dependencies
+      if: steps.yarn-cache.outputs.cache-hit != 'true'
+      working-directory: ./example
+      run: yarn install --frozen-lockfile
+    - name: 💄 Run typechecker
+      working-directory: ./example
+      run: yarn tsc

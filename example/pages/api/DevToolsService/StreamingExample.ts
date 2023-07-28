@@ -1,4 +1,4 @@
-import { StreamingExampleCar, StreamingExampleResponse } from '@/services';
+import { StreamingExampleCar, StreamingExampleResponse } from 'services';
 import { NextApiHandler } from 'next';
 import * as grpcMock from '@botchris/grpc-web-mock';
 import { StatusCode } from 'grpc-web';

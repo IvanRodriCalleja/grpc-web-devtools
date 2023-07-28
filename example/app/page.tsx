@@ -7,7 +7,7 @@ import {
 	StreamingExampleCar,
 	StreamingExampleRequest,
 	devToolsService
-} from '@/services';
+} from 'services';
 
 const Home = () => {
 	return (
