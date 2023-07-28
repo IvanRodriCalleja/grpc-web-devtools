@@ -6,7 +6,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 const EXTENSION_PATH = resolve(__dirname, './build');
-const START_URL = 'https://local.agentero.com/dashboard';
+const START_URL = 'http://localhost:3000';
 
 const launchBrowser = async () => {
 	console.log('Running chrome browser...');
@@ -16,9 +16,7 @@ const launchBrowser = async () => {
 		`--start-url=${START_URL}`,
 		'--devtools',
 		'--browser-console',
-		'--keep-profile-changes',
-		//'--chromium-profile="/Users/ivanrodriguezcalleja/Library/Application Support/Google/Chrome"',
-    	//"--arg ' --profile-directory=Profile 2'"
+		'--keep-profile-changes'
 	];
 
 	try {

@@ -24,7 +24,7 @@ export default defineConfig(() => {
 		],
 		build: {
 			sourcemap: true,
-
-		},
+			outDir: `./${process.env.BROWSER}/build`
+		}
 	};
 });
