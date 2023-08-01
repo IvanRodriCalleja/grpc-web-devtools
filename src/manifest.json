@@ -16,11 +16,5 @@
     "32": "assets/icon-ag.png",
     "48": "assets/icon-ag.png",
     "128": "assets/icon-ag.png"
-  },
-  "web_accessible_resources": [
-    {
-      "resources": ["src/contentScript/grpcWebRegister/grpcWebInterceptor.ts"],
-      "matches": ["<all_urls>"]
-    }
-  ]
+  }
 }

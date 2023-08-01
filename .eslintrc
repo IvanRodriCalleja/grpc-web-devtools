@@ -25,6 +25,11 @@
     "es6": true,
     "jest": true
   },
+  "globals": {
+    "window": true,
+    "document": true,
+    "chrome": true
+  },
   "rules": {
     "no-console": 0,
     "no-debugger": 0,
