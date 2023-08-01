@@ -27,8 +27,8 @@ jobs:
     - name: 💿 Install dependencies
       if: steps.yarn-cache.outputs.cache-hit != 'true'
       run: yarn install --frozen-lockfile
-    - name: 🌀 Run linter
-      run: yarn lint
+    - name: 🌀 Run typecheck
+      run: yarn tsc
 
   lint:
     runs-on: ubuntu-latest
