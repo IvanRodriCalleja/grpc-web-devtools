@@ -6,17 +6,17 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "dev:chrome": "concurrently \"yarn dev:example\" \"yarn launch:chrome\" \"cross-env BROWSER=chrome vite\"",
+    "dev:chrome": "concurrently \"yarn dev:example\" \"yarn launch:chrome\" \"yarn vite:dev\"",
     "build:chrome:local": "cross-env BROWSER=chrome vite build",
-    "build:chrome:dev": "cross-env BROWSER=chrome vite build --mode=dev",
-    "build:chrome:pro": "cross-env BROWSER=chrome vite build --mode=pro",
+    "build:chrome:pro": "cross-env BROWSER=chrome vite build",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
     "launch:chrome": "node ./chrome/dev.js",
     "tsc": "tsc",
     "lint": "eslint src --ext .ts,.tsx --quiet --cache",
     "test": "jest -c jest.config.cjs",
     "test:watch": "jest -c jest.config.cjs --watch",
-    "dev:example": "yarn --cwd \"example\" dev"
+    "dev:example": "yarn --cwd \"example\" dev",
+    "vite:dev": "chokidar \"**/*.ts\" -i \"./chrome/**\" -i \"./src/auto-imports.d.ts\" --initial -c \"cross-env BROWSER=chrome vite build\""
   },
   "dependencies": {
     "google-protobuf": "^3.21.2",
@@ -33,6 +33,7 @@
     "@typescript-eslint/parser": "^6.1.0",
     "@vitejs/plugin-react-swc": "^3.3.2",
     "child-process-promise": "^2.2.1",
+    "chokidar-cli": "^3.0.0",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
     "eslint": "^8.45.0",
