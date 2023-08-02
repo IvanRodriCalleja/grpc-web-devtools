@@ -12,6 +12,9 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "paths": {
+      "panda": ["./src/devtools/styled-system"],
+    }
   },
   "exclude": ["node_modules", "example"],
   "include": [

@@ -26,4 +26,4 @@ const launchBrowser = async () => {
 	}
 };
 
-setTimeout(launchBrowser, 1000);
+setTimeout(launchBrowser, 2000);

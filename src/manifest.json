@@ -11,6 +11,17 @@
       "all_frames": true
     }
   ],
+  "devtools_page": "src/devtools/devtools.html",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/devtools/devtools.html",
+        "src/devtools/panel.html"
+      ],
+      "matches": ["<all_urls>"],
+      "extension_ids": []
+    }
+  ],
   "icons": {
     "16": "assets/icon-ag.png",
     "32": "assets/icon-ag.png",
