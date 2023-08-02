@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+service DevToolsService {
+    rpc ExampleOne(ExampleOneRequest) returns (ExampleOneResponse);
+    rpc AlwaysError(AlwaysErrorRequest) returns (AlwaysErrorResponse);
+    rpc StreamingExample(StreamingExampleRequest) returns (stream StreamingExampleResponse);
+}
+
+message ExampleOneRequest {
+    string field_one = 1;
+    int32 field_two = 2;
+    bool field_three = 3;
+}
+
+message ExampleOneResponse {
+  string field_one = 1;
+  int32 field_two = 2;
+  bool field_three = 3;
+}
+
+message AlwaysErrorRequest {
+  string msg = 1;
+}
+
+message AlwaysErrorResponse {
+  string msg = 1;
+}
+
+message StreamingExampleRequest {
+  string field_one = 1;
+  int32 field_two = 2;
+  bool field_three = 3;
+}
+
+message StreamingExampleResponse {
+  repeated StreamingExampleCar field_one = 1;
+}
+
+message StreamingExampleCar {
+  string field_one = 1;
+  int32 field_two = 2;
+  bool field_three = 3;
+}
