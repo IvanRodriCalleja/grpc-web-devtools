@@ -24,7 +24,24 @@ export default defineConfig(() => {
 		],
 		build: {
 			sourcemap: true,
-			outDir: `./${process.env.BROWSER}/build`
+			outDir: `./${process.env.BROWSER}/build`,
+			rollupOptions: {
+				input: {
+					devtool: path.resolve(__dirname, 'src/devtools/panel.html')
+				}
+			}
+		},
+		resolve: {
+			alias: {
+				'@panda': path.resolve(__dirname, './src/devtools/styled-system'),
+				test: path.resolve(__dirname, './test')
+			}
+		},
+		test: {
+			globals: true,
+			environment: 'jsdom',
+			setupFiles: './vitest.setup.ts',
+			css: true
 		}
 	};
 });

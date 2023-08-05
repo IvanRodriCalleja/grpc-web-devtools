@@ -1,7 +1,7 @@
-import { ExampleOneResponse } from 'services';
-import { NextApiHandler } from 'next';
 import * as grpcMock from '@botchris/grpc-web-mock';
 import { StatusCode } from 'grpc-web';
+import { NextApiHandler } from 'next';
+import { ExampleOneResponse } from 'services';
 
 const handler: NextApiHandler = (req, res) => {
 	const response = new ExampleOneResponse();
