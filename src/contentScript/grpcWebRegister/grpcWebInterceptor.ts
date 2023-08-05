@@ -1,5 +1,5 @@
-import { StreamInterceptor, UnaryInterceptor } from 'grpc-web';
 import * as pb from 'google-protobuf';
+import { StreamInterceptor, UnaryInterceptor } from 'grpc-web';
 
 import { GRPCStreamInterceptor } from './grpcWebInterceptor/GRPCStreamInterceptor';
 import { GRPCUnaryInterceptor } from './grpcWebInterceptor/GRPCUnaryInterceptor';

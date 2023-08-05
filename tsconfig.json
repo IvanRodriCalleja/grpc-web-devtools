@@ -13,7 +13,7 @@
     "moduleResolution": "node",
     "resolveJsonModule": true,
     "paths": {
-      "panda": ["./src/devtools/styled-system"],
+      "@panda/*": ["./src/devtools/styled-system/*"],
     }
   },
   "exclude": ["node_modules", "example"],

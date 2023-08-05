@@ -1,7 +1,7 @@
-import { NextApiHandler } from 'next';
+import { grpcResponseToBuffer } from '@cloudnc/grpc-web-testing-toolbox/base';
 import { status as Status } from '@grpc/grpc-js';
 import { RpcError, StatusCode } from 'grpc-web';
-import { grpcResponseToBuffer } from '@cloudnc/grpc-web-testing-toolbox/base';
+import { NextApiHandler } from 'next';
 
 const handler: NextApiHandler = (req, res) => {
 	const message = 'This is a devtools error';
