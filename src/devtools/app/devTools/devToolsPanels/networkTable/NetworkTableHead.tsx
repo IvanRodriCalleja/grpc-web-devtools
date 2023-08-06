@@ -1,8 +1,9 @@
 import { css, cx } from '@panda/css';
 import { Table, flexRender } from '@tanstack/react-table';
 
-import { GrpcNetworkPartial } from '../../../DevToolsNetworkContext';
-import { cell, ellipsis } from './shared/table.css';
+import { GrpcNetworkPartial } from 'src/shared';
+
+import { cell, ellipsis } from './shared/tableStyles';
 
 const thead = css({
 	margin: 0,

@@ -1,15 +1,7 @@
-import { PropsWithChildren, createContext, useContext, useReducer } from 'react';
+import { PropsWithChildren, createContext, useContext, useEffect, useReducer } from 'react';
 
-import { GrpcStream } from 'src/shared/GrpcStream';
-import { GrpcUnary } from 'src/shared/GrpcUnary';
-
+import { GrpcNetworkPartial, NetworkMessage } from '../../shared';
 import { networkReducer } from './networkContext/networkReducer';
-
-type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
-
-export type GrpcUnaryPartial = Optional<GrpcUnary, 'response' | 'status' | 'time'>;
-export type GrpcStreamPartial = Optional<GrpcStream, 'status' | 'time'>;
-export type GrpcNetworkPartial = GrpcUnaryPartial | GrpcStreamPartial;
 
 export type DevToolsNetworkState = {
 	networkRequests: GrpcNetworkPartial[];
@@ -27,7 +19,24 @@ const initialState: DevToolsNetworkState = {
 };
 
 export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
-	const [state] = useReducer(networkReducer, initialState);
+	const [state, dispatch] = useReducer(networkReducer, initialState);
+
+	useEffect(() => {
+		const connection = chrome.runtime.connect({
+			name: 'panel'
+		});
+
+		connection.postMessage({
+			name: 'init',
+			tabId: chrome.devtools.inspectedWindow.tabId
+		});
+
+		connection.onMessage.addListener((message: NetworkMessage) => {
+			if (message.source === 'grpc-web-devtools') {
+				dispatch(message);
+			}
+		});
+	}, []);
 
 	return (
 		<DevToolsNetworkContext.Provider value={state}>{children}</DevToolsNetworkContext.Provider>

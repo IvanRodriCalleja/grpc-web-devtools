@@ -2,5 +2,3 @@
 **/build/
 config/
 webpack.config.js
-
-/src/auto-imports.d.ts

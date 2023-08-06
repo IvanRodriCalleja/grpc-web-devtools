@@ -1,8 +1,9 @@
 import { cx } from '@panda/css';
 import { Cell, flexRender } from '@tanstack/react-table';
 
-import { GrpcNetworkPartial } from '../../../../DevToolsNetworkContext';
-import { cell as cellClassName, ellipsis } from '../shared/table.css';
+import { GrpcNetworkPartial } from 'src/shared';
+
+import { cell as cellClassName, ellipsis } from '../shared/tableStyles';
 
 type NetworkTableRowProps = {
 	cell: Cell<GrpcNetworkPartial, unknown>;

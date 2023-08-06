@@ -7,19 +7,18 @@
   "type": "module",
   "scripts": {
     "prepare": "panda codegen",
-    "dev:chrome": "concurrently \"yarn dev:example\" \"cross-env BROWSER=chrome vite build --watch --force\" \"yarn launch:chrome\"",
-    "build:chrome:local": "cross-env BROWSER=chrome vite build",
-    "build:chrome:pro": "cross-env BROWSER=chrome vite build",
+    "dev:chrome": "cross-env BROWSER=chrome concurrently \"yarn dev:example\" \"yarn build:extension\" \"yarn launch:chrome\"",
+    "build:chrome:pro": "cross-env BROWSER=chrome yarn build:extension",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
     "launch:chrome": "node ./chrome/dev.js",
     "tsc": "tsc",
     "lint": "eslint src --ext .ts,.tsx --quiet --cache",
     "test": "vitest",
-    "test:watch": "jest -c jest.config.cjs --watch",
     "dev:example": "yarn --cwd \"example\" dev",
-    "vite:dev": "chokidar \"**/*.ts\" -i \"./chrome/**\" -i \"./src/auto-imports.d.ts\" -i \"./example/**\" -i \"./node_modules/**\" --initial -c \"cross-env BROWSER=chrome vite build\""
+    "build:extension": "node esbuild.js"
   },
   "dependencies": {
+    "@deanc/esbuild-plugin-postcss": "^1.0.2",
     "@pandacss/dev": "^0.9.0",
     "@tanstack/react-table": "^8.9.3",
     "@tanstack/react-virtual": "3.0.0-beta.54",
@@ -31,7 +30,6 @@
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
-    "@crxjs/vite-plugin": "2.0.0-beta.18",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^14.0.0",
     "@trivago/prettier-plugin-sort-imports": "^4.2.0",
@@ -42,11 +40,11 @@
     "@types/webextension-polyfill": "^0.10.1",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
-    "@vitejs/plugin-react-swc": "^3.3.2",
     "child-process-promise": "^2.2.1",
-    "chokidar-cli": "^3.0.0",
     "concurrently": "^7.6.0",
     "cross-env": "^7.0.3",
+    "esbuild": "^0.18.18",
+    "esbuild-plugin-copy": "^2.1.1",
     "eslint": "^8.45.0",
     "eslint-config-prettier": "8.8.0",
     "eslint-plugin-json": "^3.1.0",
@@ -57,9 +55,7 @@
     "jsdom": "^22.1.0",
     "prettier": "^3.0.0",
     "typescript": "5.1.6",
-    "unplugin-auto-import": "^0.12.1",
     "vite": "4.4.7",
-    "vite-plugin-environment": "1.1.3",
     "vitest": "^0.34.1",
     "web-ext": "7.6.2"
   }

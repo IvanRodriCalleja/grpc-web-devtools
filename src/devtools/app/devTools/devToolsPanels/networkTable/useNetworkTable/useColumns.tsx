@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { css } from '@panda/css';
 import { ColumnDef } from '@tanstack/react-table';
 
-import { GrpcNetworkPartial } from 'src/devtools/app/DevToolsNetworkContext';
+import { GrpcNetworkPartial } from 'src/shared';
 
 import { NetworkStatus } from './useColumns/NetworkStatus';
 import { NetworkTime } from './useColumns/NetworkTime';

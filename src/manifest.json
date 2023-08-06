@@ -5,23 +5,33 @@
   "manifest_version": 3,
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
-      "js": ["src/contentScript/grpcWebRegister.ts"],
+      "js": [
+        "contentScript.js"
+      ],
+      "matches": [
+        "<all_urls>"
+      ],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
-  "devtools_page": "src/devtools/devtools.html",
+  "devtools_page": "devtools/devtools.html",
   "web_accessible_resources": [
     {
-      "resources": [
-        "src/devtools/devtools.html",
-        "src/devtools/panel.html"
+      "matches": [
+        "<all_urls>"
       ],
-      "matches": ["<all_urls>"],
-      "extension_ids": []
+      "resources": [
+        "devtools/devtools.html",
+        "devtools/panel.html",
+        "injected.js"
+      ],
+      "use_dynamic_url": false
     }
   ],
+  "background": {
+    "service_worker": "background.js"
+  },
   "icons": {
     "16": "assets/icon-ag.png",
     "32": "assets/icon-ag.png",
