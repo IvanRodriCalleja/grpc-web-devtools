@@ -1,4 +1,4 @@
-import { StatusCode } from 'grpc-web';
+import { RpcError, StatusCode } from 'grpc-web';
 
 export type GrpcUnary = GrpcUnaryRequest & GrpcUnaryResponse;
 
@@ -17,6 +17,12 @@ export type GrpcUnaryResponse = {
 		metadata: Record<string, string>;
 		body: unknown;
 	};
+	time: number;
+	status: StatusCode;
+};
+
+export type GrpcUnaryError = {
+	error: RpcError;
 	time: number;
 	status: StatusCode;
 };

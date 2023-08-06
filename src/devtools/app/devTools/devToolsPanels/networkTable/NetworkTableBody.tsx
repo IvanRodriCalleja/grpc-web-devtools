@@ -3,7 +3,8 @@ import { Row } from '@tanstack/react-table';
 import { VirtualItem } from '@tanstack/react-virtual';
 import { StatusCode } from 'grpc-web';
 
-import { GrpcNetworkPartial } from '../../../DevToolsNetworkContext';
+import { GrpcNetworkPartial } from 'src/shared';
+
 import { NetworkTableRow } from './networkTableBody/NetworkTableRow';
 import { VirtualizationBottomSpacing } from './networkTableBody/VirtualizationBottomSpacing';
 import { VirtualizationTopSpacing } from './networkTableBody/VirtualizationTopSpacing';
