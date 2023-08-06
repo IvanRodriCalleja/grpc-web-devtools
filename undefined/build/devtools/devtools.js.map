@@ -1,7 +1,0 @@
-{
-  "version": 3,
-  "sources": ["../../../src/devtools/devtools.tsx"],
-  "sourcesContent": ["chrome.devtools.panels.create('grpc-web', '', 'devtools/panel.html');\n"],
-  "mappings": "mBAAA,OAAO,SAAS,OAAO,OAAO,WAAY,GAAI,qBAAqB",
-  "names": []
-}
