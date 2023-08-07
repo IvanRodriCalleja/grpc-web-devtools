@@ -1,5 +1,6 @@
 import { css } from '@panda/css';
 
+import { useDevToolsNetwork } from '../../DevToolsNetworkContext';
 import { NetworkTableBody } from './networkTable/NetworkTableBody';
 import { NetworkTableHead } from './networkTable/NetworkTableHead';
 import { useNetworkTable } from './networkTable/useNetworkTable';
@@ -15,12 +16,18 @@ const table = css({
 
 export const NetworkTable = () => {
 	const { virtualRows, totalSize, tableContainerRef, tableRender, rows } = useNetworkTable();
+	const { onSelectNetwork } = useDevToolsNetwork();
 
 	return (
 		<div ref={tableContainerRef} className={tableContainer}>
 			<table className={table}>
 				<NetworkTableHead tableRender={tableRender} />
-				<NetworkTableBody rows={rows} totalSize={totalSize} virtualRows={virtualRows} />
+				<NetworkTableBody
+					rows={rows}
+					totalSize={totalSize}
+					virtualRows={virtualRows}
+					onSelectNetwork={onSelectNetwork}
+				/>
 			</table>
 		</div>
 	);
