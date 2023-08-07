@@ -10,9 +10,16 @@ import {
 
 import { DevToolsNetworkState } from '../DevToolsNetworkContext';
 
+type selectedNetworkRequest = {
+	action: {
+		type: 'select-network-request';
+	};
+	networkId: string;
+};
+
 export const networkReducer = (
 	state: DevToolsNetworkState,
-	{ action, networkId }: NetworkMessage
+	{ action, networkId }: NetworkMessage | selectedNetworkRequest
 ): DevToolsNetworkState => {
 	switch (action.type) {
 		case 'unary-request':
@@ -91,6 +98,11 @@ export const networkReducer = (
 					}
 					return networkCall;
 				})
+			};
+		case 'select-network-request':
+			return {
+				...state,
+				selectedNetworkRequest: state.networkRequests.find(({ id }) => id === networkId)
 			};
 		default:
 			return state;

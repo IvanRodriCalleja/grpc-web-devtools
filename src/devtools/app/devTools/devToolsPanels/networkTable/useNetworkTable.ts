@@ -9,7 +9,9 @@ import { useColumns } from './useNetworkTable/useColumns';
 export const useNetworkTable = () => {
 	const columns = useColumns();
 
-	const { networkRequests } = useDevToolsNetwork();
+	const {
+		state: { networkRequests }
+	} = useDevToolsNetwork();
 	const tableRender = useReactTable({
 		data: networkRequests,
 		columns,

@@ -28,22 +28,29 @@ type NetworkTableBodyProps = {
 	virtualRows: VirtualItem[];
 	rows: Row<GrpcNetworkPartial>[];
 	totalSize: number;
+	onSelectNetwork: (networkId: string) => void;
 };
 
-export const NetworkTableBody = ({ virtualRows, rows, totalSize }: NetworkTableBodyProps) => (
+export const NetworkTableBody = ({
+	virtualRows,
+	rows,
+	totalSize,
+	onSelectNetwork
+}: NetworkTableBodyProps) => (
 	<tbody>
 		<VirtualizationTopSpacing virtualRows={virtualRows} />
 
 		{virtualRows.map(virtualRow => {
 			const row = rows[virtualRow.index];
 
-			const { status } = row.original;
+			const { status, id } = row.original;
 			const hasFailed = status !== StatusCode.OK && status !== undefined;
 
 			return (
 				<tr
 					className={cx(tr, virtualRow.index % 2 === 0 && trOdd, hasFailed && networkFailed)}
-					key={row.id}>
+					key={row.id}
+					onClick={() => onSelectNetwork(id)}>
 					{row.getVisibleCells().map(cell => (
 						<NetworkTableRow key={row.id} cell={cell} />
 					))}

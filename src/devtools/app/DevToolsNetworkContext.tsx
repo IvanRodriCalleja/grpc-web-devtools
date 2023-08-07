@@ -8,9 +8,17 @@ export type DevToolsNetworkState = {
 	selectedNetworkRequest?: GrpcNetworkPartial;
 };
 
-const DevToolsNetworkContext = createContext<DevToolsNetworkState>({
-	networkRequests: [],
-	selectedNetworkRequest: undefined
+type DevToolsNetworkContextValue = {
+	state: DevToolsNetworkState;
+	onSelectNetwork: (networkId: string) => void;
+};
+
+const DevToolsNetworkContext = createContext<DevToolsNetworkContextValue>({
+	state: {
+		networkRequests: [],
+		selectedNetworkRequest: undefined
+	},
+	onSelectNetwork: () => {}
 });
 
 const initialState: DevToolsNetworkState = {
@@ -20,6 +28,14 @@ const initialState: DevToolsNetworkState = {
 
 export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
 	const [state, dispatch] = useReducer(networkReducer, initialState);
+
+	const onSelectNetwork = (networkId: string) =>
+		dispatch({
+			networkId,
+			action: {
+				type: 'select-network-request'
+			}
+		});
 
 	useEffect(() => {
 		const connection = chrome.runtime.connect({
@@ -39,7 +55,9 @@ export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
 	}, []);
 
 	return (
-		<DevToolsNetworkContext.Provider value={state}>{children}</DevToolsNetworkContext.Provider>
+		<DevToolsNetworkContext.Provider value={{ onSelectNetwork, state }}>
+			{children}
+		</DevToolsNetworkContext.Provider>
 	);
 };
 
