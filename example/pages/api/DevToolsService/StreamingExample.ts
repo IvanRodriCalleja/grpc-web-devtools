@@ -2,7 +2,8 @@ import * as grpcMock from '@botchris/grpc-web-mock';
 import { StatusCode } from 'grpc-web';
 import { NextApiHandler } from 'next';
 import { StreamingExampleCar, StreamingExampleResponse } from 'services';
-import { delay } from 'shared/delay';
+
+const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
 
 const handler: NextApiHandler = async (req, res) => {
 	res

@@ -1,39 +1,51 @@
 import * as pb from 'google-protobuf';
 import { ClientReadableStream, Request, StreamInterceptor } from 'grpc-web';
 
+import {
+	sendStreamNetworkDataMessageArgs,
+	sendStreamNetworkEndMessageArgs,
+	sendStreamNetworkErrorMessageArgs,
+	sendStreamNetworkMetadataMessageArgs,
+	sendStreamNetworkRequestMessageArgs,
+	sendStreamNetworkStatusMessageArgs
+} from './grpcUnaryInterceptor/streamMessageSender';
+import { createId } from './shared/createId';
+
 export class GRPCStreamInterceptor implements StreamInterceptor<pb.Message, pb.Message> {
 	intercept(
 		request: Request<pb.Message, pb.Message>,
 		invoker: (request: Request<pb.Message, pb.Message>) => ClientReadableStream<pb.Message>
 	): ClientReadableStream<pb.Message> {
-		const requestM = {
-			body: request.getRequestMessage().toObject(),
-			metadata: request.getMetadata(),
-			url: request.getMethodDescriptor().getName()
-		};
+		const start = performance.now();
+		const networkId = createId();
 
-		console.log({ requestM });
+		sendStreamNetworkRequestMessageArgs({ networkId, request });
 
 		const stream = invoker(request);
 
-		stream.on('data', response => {
-			console.log({ url: requestM.url, response: response.toObject() });
+		stream.on('data', data => {
+			const time = Math.round(performance.now() - start);
+			sendStreamNetworkDataMessageArgs({ data, networkId, time });
 		});
 
 		stream.on('metadata', metadata => {
-			console.log({ url: requestM.url, metadata });
+			const time = Math.round(performance.now() - start);
+			sendStreamNetworkMetadataMessageArgs({ metadata, networkId, time });
 		});
 
 		stream.on('status', status => {
-			console.log({ url: requestM.url, status });
-		});
-
-		stream.on('end', () => {
-			console.log({ url: requestM.url, response: 'EOF' });
+			const time = Math.round(performance.now() - start);
+			sendStreamNetworkStatusMessageArgs({ status, networkId, time });
 		});
 
 		stream.on('error', error => {
-			console.log({ error });
+			const time = Math.round(performance.now() - start);
+			sendStreamNetworkErrorMessageArgs({ error, networkId, time });
+		});
+
+		stream.on('end', () => {
+			const time = Math.round(performance.now() - start);
+			sendStreamNetworkEndMessageArgs({ networkId, time });
 		});
 
 		return stream;

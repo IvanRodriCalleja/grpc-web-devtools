@@ -82,22 +82,23 @@ const Streaming = () => {
 		stream.on('data', response => {
 			const cars = response.toObject().fieldOneList;
 			setState(state => [...state, ...cars]);
+			console.log('data', { response: response.toObject() });
 		});
 
 		stream.on('metadata', metadata => {
-			console.log({ metadata });
+			console.log('metadata', { metadata });
 		});
 
 		stream.on('status', status => {
-			console.log({ status });
+			console.log('status', { status });
 		});
 
 		stream.on('end', () => {
-			console.log('EOF');
+			console.log('end', 'EOF');
 		});
 
 		stream.on('error', error => {
-			console.log({ error });
+			console.log('error', { error });
 		});
 	};
 
