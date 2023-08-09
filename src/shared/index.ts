@@ -15,64 +15,88 @@ export type GrpcUnaryPartial = Optional<GrpcUnary, 'response' | 'status' | 'time
 export type GrpcStreamPartial = Optional<GrpcStream, 'status' | 'time'>;
 export type GrpcNetworkPartial = GrpcUnaryPartial | GrpcStreamPartial;
 
-export type PartialNetworkMessage =
-	| UnaryRequestMessage
-	| UnaryResponseMessage
-	| UnaryErrorMessage
-	| StreamRequestMessage
-	| StreamDataMessage
-	| StreamMetadataMessage
-	| StreamStatusMessage
-	| StreamErrorMessage
-	| StreamEndMessage;
+export type PartialNetworkAction =
+	| UnaryRequestAction
+	| UnaryResponseAction
+	| UnaryErrorAction
+	| StreamRequestAction
+	| StreamDataAction
+	| StreamMetadataAction
+	| StreamStatusAction
+	| StreamErrorAction
+	| StreamEndAction;
 
-export type UnaryRequestMessage = {
+export type UnaryRequestAction = {
 	type: 'unary-request';
-	partial: GrpcUnaryRequest;
+	payload: {
+		partial: GrpcUnaryRequest;
+	};
 };
 
-export type UnaryResponseMessage = {
+export type UnaryResponseAction = {
 	type: 'unary-response';
-	partial: GrpcUnaryResponse;
+	payload: {
+		networkId: string;
+		partial: GrpcUnaryResponse;
+	};
 };
 
-export type UnaryErrorMessage = {
+export type UnaryErrorAction = {
 	type: 'unary-error';
-	partial: GrpcUnaryError;
+	payload: {
+		networkId: string;
+		partial: GrpcUnaryError;
+	};
 };
 
 export type NetworkMessage = {
 	source: 'grpc-web-devtools';
-	networkId: string;
-	action: PartialNetworkMessage;
+	action: PartialNetworkAction;
 };
 
-export type StreamRequestMessage = {
+export type StreamRequestAction = {
 	type: 'stream-request';
-	partial: GrpcStreamRequest;
+	payload: {
+		partial: GrpcStreamRequest;
+	};
 };
 
-export type StreamDataMessage = {
+export type StreamDataAction = {
 	type: 'stream-data';
-	partial: GrpcStreamData;
+	payload: {
+		networkId: string;
+		partial: GrpcStreamData;
+	};
 };
 
-export type StreamMetadataMessage = {
+export type StreamMetadataAction = {
 	type: 'stream-metadata';
-	partial: GrpcStreamMetadata;
+	payload: {
+		networkId: string;
+		partial: GrpcStreamMetadata;
+	};
 };
 
-export type StreamStatusMessage = {
+export type StreamStatusAction = {
 	type: 'stream-status';
-	partial: GrpcStreamStatus;
+	payload: {
+		networkId: string;
+		partial: GrpcStreamStatus;
+	};
 };
 
-export type StreamErrorMessage = {
+export type StreamErrorAction = {
 	type: 'stream-error';
-	partial: GrpcStreamError;
+	payload: {
+		networkId: string;
+		partial: GrpcStreamError;
+	};
 };
 
-export type StreamEndMessage = {
+export type StreamEndAction = {
 	type: 'stream-end';
-	partial: GrpcStreamEnd;
+	payload: {
+		networkId: string;
+		partial: GrpcStreamEnd;
+	};
 };

@@ -2,12 +2,12 @@ import * as pb from 'google-protobuf';
 import { Metadata, Request, RpcError, Status } from 'grpc-web';
 
 import {
-	StreamDataMessage,
-	StreamEndMessage,
-	StreamErrorMessage,
-	StreamMetadataMessage,
-	StreamRequestMessage,
-	StreamStatusMessage
+	StreamDataAction,
+	StreamEndAction,
+	StreamErrorAction,
+	StreamMetadataAction,
+	StreamRequestAction,
+	StreamStatusAction
 } from 'src/shared';
 
 import { sendNetworkMessage } from '../shared/networkMessageSender';
@@ -21,20 +21,22 @@ export const sendStreamNetworkRequestMessageArgs = ({
 	networkId,
 	request
 }: SendStreamNetworkRequestMessageArgs) => {
-	const partialNetworkMessage: StreamRequestMessage = {
+	const action: StreamRequestAction = {
 		type: 'stream-request',
-		partial: {
-			id: networkId,
-			type: 'stream',
-			url: request.getMethodDescriptor().getName(),
-			request: {
-				body: request.getRequestMessage().toObject(),
-				metadata: request.getMetadata()
+		payload: {
+			partial: {
+				id: networkId,
+				type: 'stream',
+				url: request.getMethodDescriptor().getName(),
+				request: {
+					body: request.getRequestMessage().toObject(),
+					metadata: request.getMetadata()
+				}
 			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };
 
 type SendStreamNetworkDataMessageArgs = {
@@ -48,15 +50,18 @@ export const sendStreamNetworkDataMessageArgs = ({
 	data,
 	time
 }: SendStreamNetworkDataMessageArgs) => {
-	const partialNetworkMessage: StreamDataMessage = {
+	const action: StreamDataAction = {
 		type: 'stream-data',
-		partial: {
-			data: data.toObject(),
-			time
+		payload: {
+			networkId,
+			partial: {
+				data: data.toObject(),
+				time
+			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };
 
 type SendStreamNetworkMetadataMessageArgs = {
@@ -70,15 +75,18 @@ export const sendStreamNetworkMetadataMessageArgs = ({
 	metadata,
 	time
 }: SendStreamNetworkMetadataMessageArgs) => {
-	const partialNetworkMessage: StreamMetadataMessage = {
+	const action: StreamMetadataAction = {
 		type: 'stream-metadata',
-		partial: {
-			metadata,
-			time
+		payload: {
+			networkId,
+			partial: {
+				metadata,
+				time
+			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };
 
 type SendStreamNetworkStatusMessageArgs = {
@@ -92,15 +100,18 @@ export const sendStreamNetworkStatusMessageArgs = ({
 	status,
 	time
 }: SendStreamNetworkStatusMessageArgs) => {
-	const partialNetworkMessage: StreamStatusMessage = {
+	const action: StreamStatusAction = {
 		type: 'stream-status',
-		partial: {
-			status,
-			time
+		payload: {
+			networkId,
+			partial: {
+				status,
+				time
+			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };
 
 type SendStreamNetworkErrorMessageArgs = {
@@ -114,15 +125,18 @@ export const sendStreamNetworkErrorMessageArgs = ({
 	error,
 	time
 }: SendStreamNetworkErrorMessageArgs) => {
-	const partialNetworkMessage: StreamErrorMessage = {
+	const action: StreamErrorAction = {
 		type: 'stream-error',
-		partial: {
-			error,
-			time
+		payload: {
+			networkId,
+			partial: {
+				error,
+				time
+			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };
 
 type SendStreamNetworkEndMessageArgs = {
@@ -134,13 +148,16 @@ export const sendStreamNetworkEndMessageArgs = ({
 	networkId,
 	time
 }: SendStreamNetworkEndMessageArgs) => {
-	const partialNetworkMessage: StreamEndMessage = {
+	const action: StreamEndAction = {
 		type: 'stream-end',
-		partial: {
-			end: 'EOF',
-			time
+		payload: {
+			networkId,
+			partial: {
+				end: 'EOF',
+				time
+			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };

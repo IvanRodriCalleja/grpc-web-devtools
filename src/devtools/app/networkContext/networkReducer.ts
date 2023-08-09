@@ -1,6 +1,6 @@
 import { StatusCode } from 'grpc-web';
 
-import { GrpcStreamPartial, NetworkMessage } from 'src/shared';
+import { GrpcStreamPartial, PartialNetworkAction } from 'src/shared';
 import {
 	GrpcStreamData,
 	GrpcStreamEnd,
@@ -10,52 +10,84 @@ import {
 
 import { DevToolsNetworkState } from '../DevToolsNetworkContext';
 
-type selectedNetworkRequest = {
-	action: {
-		type: 'select-network-request';
+type SelectedNetworkRequest = {
+	type: 'select-network-request';
+	payload: {
+		networkId: string;
 	};
-	networkId: string;
 };
+
+type CloseNetworkRequest = {
+	type: 'close-network-request';
+};
+
+type StartRecording = {
+	type: 'start-recording';
+};
+
+type StopRecording = {
+	type: 'stop-recording';
+};
+
+type ClearNetworks = {
+	type: 'clear-networks';
+};
+
+type Actions =
+	| PartialNetworkAction
+	| SelectedNetworkRequest
+	| CloseNetworkRequest
+	| StartRecording
+	| StopRecording
+	| ClearNetworks;
 
 export const networkReducer = (
 	state: DevToolsNetworkState,
-	{ action, networkId }: NetworkMessage | selectedNetworkRequest
+	action: Actions
 ): DevToolsNetworkState => {
 	switch (action.type) {
 		case 'unary-request':
+			if (state.isRecording === false) return state;
+
 			return {
 				...state,
-				networkRequests: [...state.networkRequests, action.partial]
+				networkRequests: [...state.networkRequests, action.payload.partial]
 			};
 		case 'unary-response':
 		case 'unary-error':
+			if (state.isRecording === false) return state;
+
 			return {
 				...state,
 				networkRequests: state.networkRequests.map(networkCall => {
-					if (networkCall.id === networkId) {
-						return { ...networkCall, ...action.partial };
+					if (networkCall.id === action.payload.networkId) {
+						return { ...networkCall, ...action.payload.partial };
 					}
 					return networkCall;
-				})
+				}) as DevToolsNetworkState['networkRequests']
 			};
 		case 'stream-request':
+			if (state.isRecording === false) return state;
+
 			return {
 				...state,
-				networkRequests: [...state.networkRequests, { ...action.partial, chunks: [] }]
+				networkRequests: [...state.networkRequests, { ...action.payload.partial, responses: [] }]
 			};
 		case 'stream-data':
 		case 'stream-metadata':
 		case 'stream-status':
+			if (state.isRecording === false) return state;
+
 			return {
 				...state,
 				networkRequests: state.networkRequests.map(networkCall => {
 					const network = networkCall as GrpcStreamPartial;
-					if (networkCall.id === networkId) {
+					if (networkCall.id === action.payload.networkId) {
 						return {
 							...networkCall,
-							chunks: [
-								...network.chunks,
-								action.partial as
+							responses: [
+								...network.responses,
+								action.payload.partial as
 									| GrpcStreamData
 									| GrpcStreamMetadata
 									| GrpcStreamEnd
@@ -68,15 +100,17 @@ export const networkReducer = (
 			};
 
 		case 'stream-error':
+			if (state.isRecording === false) return state;
+
 			return {
 				...state,
 				networkRequests: state.networkRequests.map(networkCall => {
 					const network = networkCall as GrpcStreamPartial;
-					if (networkCall.id === networkId) {
+					if (networkCall.id === action.payload.networkId) {
 						return {
 							...networkCall,
-							status: action.partial.error.code,
-							chunks: [...network.chunks, action.partial]
+							status: action.payload.partial.error.code,
+							responses: [...network.responses, action.payload.partial]
 						};
 					}
 					return networkCall;
@@ -84,16 +118,18 @@ export const networkReducer = (
 			};
 
 		case 'stream-end':
+			if (state.isRecording === false) return state;
+
 			return {
 				...state,
 				networkRequests: state.networkRequests.map(networkCall => {
 					const network = networkCall as GrpcStreamPartial;
-					if (networkCall.id === networkId) {
+					if (networkCall.id === action.payload.networkId) {
 						return {
 							...networkCall,
 							status: networkCall.status || StatusCode.OK,
-							time: action.partial.time,
-							chunks: [...network.chunks, action.partial]
+							time: action.payload.partial.time,
+							responses: [...network.responses, action.payload.partial]
 						};
 					}
 					return networkCall;
@@ -102,8 +138,31 @@ export const networkReducer = (
 		case 'select-network-request':
 			return {
 				...state,
-				selectedNetworkRequest: state.networkRequests.find(({ id }) => id === networkId)
+				selectedId: action.payload.networkId
 			};
+
+		case 'close-network-request':
+			return {
+				...state,
+				selectedId: undefined
+			};
+		case 'start-recording':
+			return {
+				...state,
+				isRecording: true
+			};
+
+		case 'stop-recording':
+			return {
+				...state,
+				isRecording: false
+			};
+		case 'clear-networks':
+			return {
+				...state,
+				networkRequests: []
+			};
+
 		default:
 			return state;
 	}

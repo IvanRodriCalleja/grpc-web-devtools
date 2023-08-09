@@ -1,7 +1,7 @@
 import { RpcError, StatusCode } from 'grpc-web';
 import { describe, it } from 'vitest';
 
-import { NetworkMessage } from 'src/shared';
+import { PartialNetworkAction } from 'src/shared';
 import { GrpcUnaryRequest } from 'src/shared/GrpcUnary';
 
 import { DevToolsNetworkState } from '../DevToolsNetworkContext';
@@ -9,7 +9,8 @@ import { networkReducer } from './networkReducer';
 
 const emptyState: DevToolsNetworkState = {
 	networkRequests: [],
-	selectedNetworkRequest: undefined
+	selectedId: undefined,
+	isRecording: true
 };
 
 const unaryRequestTest: GrpcUnaryRequest = {
@@ -23,11 +24,9 @@ describe('networkReducer', () => {
 	describe('Unary actions', () => {
 		describe('Unary request', () => {
 			it('Should add Unary request to state', () => {
-				const message: NetworkMessage = {
-					source: 'grpc-web-devtools',
-					networkId: '1',
-					action: {
-						type: 'unary-request',
+				const action: PartialNetworkAction = {
+					type: 'unary-request',
+					payload: {
 						partial: {
 							id: '1',
 							type: 'unary',
@@ -37,19 +36,18 @@ describe('networkReducer', () => {
 					}
 				};
 
-				const state = networkReducer(emptyState, message);
+				const state = networkReducer(emptyState, action);
 				expect(state).toEqual({
-					networkRequests: [message.action.partial],
-					selectedNetworkRequest: undefined
+					networkRequests: [action.payload.partial],
+					selectedNetworkRequest: undefined,
+					isRecording: true
 				});
 			});
 
 			it('Should add multiple Unary request to state', () => {
-				const messageOne: NetworkMessage = {
-					source: 'grpc-web-devtools',
-					networkId: '1',
-					action: {
-						type: 'unary-request',
+				const messageOne: PartialNetworkAction = {
+					type: 'unary-request',
+					payload: {
 						partial: {
 							id: '1',
 							type: 'unary',
@@ -59,11 +57,9 @@ describe('networkReducer', () => {
 					}
 				};
 
-				const messageTwo: NetworkMessage = {
-					source: 'grpc-web-devtools',
-					networkId: '2',
-					action: {
-						type: 'unary-request',
+				const messageTwo: PartialNetworkAction = {
+					type: 'unary-request',
+					payload: {
 						partial: {
 							id: '2',
 							type: 'unary',
@@ -76,19 +72,19 @@ describe('networkReducer', () => {
 				const firstState = networkReducer(emptyState, messageOne);
 				const state = networkReducer(firstState, messageTwo);
 				expect(state).toEqual({
-					networkRequests: [messageOne.action.partial, messageTwo.action.partial],
-					selectedNetworkRequest: undefined
+					networkRequests: [messageOne.payload.partial, messageTwo.payload.partial],
+					selectedNetworkRequest: undefined,
+					isRecording: true
 				});
 			});
 		});
 
 		describe('Unary response', () => {
 			it('Should append response to request', () => {
-				const message: NetworkMessage = {
-					source: 'grpc-web-devtools',
-					networkId: '1',
-					action: {
-						type: 'unary-response',
+				const message: PartialNetworkAction = {
+					type: 'unary-response',
+					payload: {
+						networkId: '1',
 						partial: {
 							status: StatusCode.OK,
 							response: { body: { test: 'test' }, metadata: { other: 'other' } },
@@ -98,13 +94,15 @@ describe('networkReducer', () => {
 				};
 
 				const initialState: DevToolsNetworkState = {
-					networkRequests: [unaryRequestTest]
+					networkRequests: [unaryRequestTest],
+					isRecording: true
 				};
 
 				const state = networkReducer(initialState, message);
 				expect(state).toEqual({
-					networkRequests: [{ ...unaryRequestTest, ...message.action.partial }],
-					selectedNetworkRequest: undefined
+					networkRequests: [{ ...unaryRequestTest, ...message.payload.partial }],
+					selectedNetworkRequest: undefined,
+					isRecording: true
 				});
 			});
 		});
@@ -112,27 +110,28 @@ describe('networkReducer', () => {
 
 	describe('Unary error', () => {
 		it('Should append error to request', () => {
-			const message: NetworkMessage = {
-				source: 'grpc-web-devtools',
-				networkId: '1',
-				action: {
-					type: 'unary-error',
+			const message: PartialNetworkAction = {
+				type: 'unary-error',
+				payload: {
+					networkId: '1',
 					partial: {
 						status: StatusCode.NOT_FOUND,
-						error: new RpcError(StatusCode.NOT_FOUND, 'Not found', {}),
+						response: new RpcError(StatusCode.NOT_FOUND, 'Not found', {}),
 						time: 100
 					}
 				}
 			};
 
 			const initialState: DevToolsNetworkState = {
-				networkRequests: [unaryRequestTest]
+				networkRequests: [unaryRequestTest],
+				isRecording: true
 			};
 
 			const state = networkReducer(initialState, message);
 			expect(state).toEqual({
-				networkRequests: [{ ...unaryRequestTest, ...message.action.partial }],
-				selectedNetworkRequest: undefined
+				networkRequests: [{ ...unaryRequestTest, ...message.payload.partial }],
+				selectedNetworkRequest: undefined,
+				isRecording: true
 			});
 		});
 	});

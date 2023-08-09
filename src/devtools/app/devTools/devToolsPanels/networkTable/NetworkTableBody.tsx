@@ -16,6 +16,10 @@ const tr = css({
 	}
 });
 
+const selectedTr = css({
+	backgroundColor: 'var(--network-row-hover) !important'
+});
+
 const trOdd = css({
 	backgroundColor: 'var(--network-row-odd)'
 });
@@ -28,6 +32,7 @@ type NetworkTableBodyProps = {
 	virtualRows: VirtualItem[];
 	rows: Row<GrpcNetworkPartial>[];
 	totalSize: number;
+	selectedNetworkRequest: GrpcNetworkPartial | undefined;
 	onSelectNetwork: (networkId: string) => void;
 };
 
@@ -35,6 +40,7 @@ export const NetworkTableBody = ({
 	virtualRows,
 	rows,
 	totalSize,
+	selectedNetworkRequest,
 	onSelectNetwork
 }: NetworkTableBodyProps) => (
 	<tbody>
@@ -48,11 +54,16 @@ export const NetworkTableBody = ({
 
 			return (
 				<tr
-					className={cx(tr, virtualRow.index % 2 === 0 && trOdd, hasFailed && networkFailed)}
-					key={row.id}
+					className={cx(
+						tr,
+						virtualRow.index % 2 === 0 && trOdd,
+						hasFailed && networkFailed,
+						selectedNetworkRequest && selectedNetworkRequest.id === id && selectedTr
+					)}
+					key={id}
 					onClick={() => onSelectNetwork(id)}>
 					{row.getVisibleCells().map(cell => (
-						<NetworkTableRow key={row.id} cell={cell} />
+						<NetworkTableRow key={cell.column.id} cell={cell} />
 					))}
 				</tr>
 			);

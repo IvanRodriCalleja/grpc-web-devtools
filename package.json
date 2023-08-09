@@ -27,6 +27,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-resizable-panels": "^0.0.54",
+    "react18-json-view": "^0.1.0",
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {
@@ -37,6 +38,7 @@
     "@types/google-protobuf": "^3.15.6",
     "@types/react": "^18.2.18",
     "@types/react-dom": "^18.2.7",
+    "@types/react-syntax-highlighter": "^15.5.7",
     "@types/webextension-polyfill": "^0.10.1",
     "@typescript-eslint/eslint-plugin": "^6.1.0",
     "@typescript-eslint/parser": "^6.1.0",
