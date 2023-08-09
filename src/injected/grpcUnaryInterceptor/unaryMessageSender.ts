@@ -1,7 +1,7 @@
 import * as pb from 'google-protobuf';
 import { Request, RpcError, StatusCode, UnaryResponse } from 'grpc-web';
 
-import { UnaryErrorMessage, UnaryRequestMessage, UnaryResponseMessage } from 'src/shared';
+import { UnaryErrorAction, UnaryRequestAction, UnaryResponseAction } from 'src/shared';
 
 import { sendNetworkMessage } from '../shared/networkMessageSender';
 
@@ -14,20 +14,22 @@ export const sendUnaryNetworkRequestMessage = ({
 	networkId,
 	request
 }: SendUnaryNetworkRequestMessageArgs) => {
-	const partialNetworkMessage: UnaryRequestMessage = {
+	const action: UnaryRequestAction = {
 		type: 'unary-request',
-		partial: {
-			id: networkId,
-			type: 'unary',
-			url: request.getMethodDescriptor().getName(),
-			request: {
-				body: request.getRequestMessage().toObject(),
-				metadata: request.getMetadata()
+		payload: {
+			partial: {
+				id: networkId,
+				type: 'unary',
+				url: request.getMethodDescriptor().getName(),
+				request: {
+					body: request.getRequestMessage().toObject(),
+					metadata: request.getMetadata()
+				}
 			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };
 
 type SendUnaryResponseArgs = {
@@ -41,19 +43,22 @@ export const sendUnaryNetworkResponseMessage = ({
 	response,
 	time
 }: SendUnaryResponseArgs) => {
-	const partialNetworkMessage: UnaryResponseMessage = {
+	const action: UnaryResponseAction = {
 		type: 'unary-response',
-		partial: {
-			time,
-			status: StatusCode.OK,
-			response: {
-				body: response.getResponseMessage().toObject(),
-				metadata: response.getMetadata()
+		payload: {
+			networkId,
+			partial: {
+				time,
+				status: StatusCode.OK,
+				response: {
+					body: response.getResponseMessage().toObject(),
+					metadata: response.getMetadata()
+				}
 			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };
 
 type SendUnaryNetworkErrorMessageArgs = {
@@ -67,14 +72,17 @@ export const sendUnaryNetworkErrorMessage = ({
 	error,
 	time
 }: SendUnaryNetworkErrorMessageArgs) => {
-	const partialNetworkMessage: UnaryErrorMessage = {
+	const action: UnaryErrorAction = {
 		type: 'unary-error',
-		partial: {
-			time,
-			status: error.code,
-			error
+		payload: {
+			networkId,
+			partial: {
+				time,
+				status: error.code,
+				response: error
+			}
 		}
 	};
 
-	sendNetworkMessage({ partialNetworkMessage, networkId });
+	sendNetworkMessage({ action });
 };

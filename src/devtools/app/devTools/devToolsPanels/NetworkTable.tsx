@@ -16,7 +16,10 @@ const table = css({
 
 export const NetworkTable = () => {
 	const { virtualRows, totalSize, tableContainerRef, tableRender, rows } = useNetworkTable();
-	const { onSelectNetwork } = useDevToolsNetwork();
+	const {
+		onSelectNetwork,
+		state: { selectedNetworkRequest }
+	} = useDevToolsNetwork();
 
 	return (
 		<div ref={tableContainerRef} className={tableContainer}>
@@ -26,6 +29,7 @@ export const NetworkTable = () => {
 					rows={rows}
 					totalSize={totalSize}
 					virtualRows={virtualRows}
+					selectedNetworkRequest={selectedNetworkRequest}
 					onSelectNetwork={onSelectNetwork}
 				/>
 			</table>

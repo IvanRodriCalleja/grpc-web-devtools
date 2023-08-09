@@ -1,7 +1,7 @@
 import { Metadata, RpcError, Status, StatusCode } from 'grpc-web';
 
 export type GrpcStream = GrpcStreamRequest & {
-	chunks: (GrpcStreamData | GrpcStreamMetadata | GrpcStreamEnd | GrpcStreamError)[];
+	responses: (GrpcStreamData | GrpcStreamMetadata | GrpcStreamEnd | GrpcStreamError)[];
 	time: number;
 	status: StatusCode;
 };

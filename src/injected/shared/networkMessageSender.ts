@@ -1,17 +1,12 @@
-import { NetworkMessage, PartialNetworkMessage } from 'src/shared';
+import { NetworkMessage, PartialNetworkAction } from 'src/shared';
 
 type SendNetworkMessageArgs = {
-	partialNetworkMessage: PartialNetworkMessage;
-	networkId: string;
+	action: PartialNetworkAction;
 };
 
-export const sendNetworkMessage = ({
-	partialNetworkMessage,
-	networkId
-}: SendNetworkMessageArgs) => {
+export const sendNetworkMessage = ({ action }: SendNetworkMessageArgs) => {
 	window.postMessage({
 		source: 'grpc-web-devtools',
-		networkId,
-		action: { ...partialNetworkMessage }
+		action
 	} as NetworkMessage);
 };

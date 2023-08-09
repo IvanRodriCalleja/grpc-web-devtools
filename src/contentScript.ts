@@ -10,11 +10,7 @@ window.addEventListener('message', (event: MessageEvent<NetworkMessage>) => {
 
 	const message = event.data;
 
-	if (
-		message.source === 'grpc-web-devtools' &&
-		typeof message.action === 'object' &&
-		message.networkId !== undefined
-	) {
+	if (message.source === 'grpc-web-devtools' && typeof message.action === 'object') {
 		chrome.runtime.sendMessage(message);
 	}
 });

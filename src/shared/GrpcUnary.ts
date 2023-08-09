@@ -22,7 +22,7 @@ export type GrpcUnaryResponse = {
 };
 
 export type GrpcUnaryError = {
-	error: RpcError;
+	response: RpcError;
 	time: number;
 	status: StatusCode;
 };
