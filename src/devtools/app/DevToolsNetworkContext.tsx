@@ -7,6 +7,7 @@ export type DevToolsNetworkState = {
 	networkRequests: GrpcNetworkPartial[];
 	isRecording: boolean;
 	selectedId?: string;
+	search: string;
 };
 
 type DevToolsNetworkContextValue = {
@@ -18,25 +19,29 @@ type DevToolsNetworkContextValue = {
 	onStartRecording: () => void;
 	onStopRecording: () => void;
 	onClearNetworks: () => void;
+	onSetSearch: (search: string) => void;
 };
 
 const DevToolsNetworkContext = createContext<DevToolsNetworkContextValue>({
 	state: {
 		networkRequests: [],
 		isRecording: true,
-		selectedNetworkRequest: undefined
+		selectedNetworkRequest: undefined,
+		search: ''
 	},
 	onSelectNetwork: () => {},
 	onCloseNetwork: () => {},
 	onStartRecording: () => {},
 	onStopRecording: () => {},
-	onClearNetworks: () => {}
+	onClearNetworks: () => {},
+	onSetSearch: () => {}
 });
 
 const initialState: DevToolsNetworkState = {
 	networkRequests: [],
 	isRecording: true,
-	selectedId: undefined
+	selectedId: undefined,
+	search: ''
 };
 
 export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
@@ -70,6 +75,12 @@ export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
 			type: 'clear-networks'
 		});
 
+	const onSetSearch = (search: string) =>
+		dispatch({
+			type: 'set-search',
+			payload: search
+		});
+
 	useEffect(() => {
 		const connection = chrome.runtime.connect({
 			name: 'panel'
@@ -88,6 +99,7 @@ export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
 	}, []);
 
 	const selectedNetworkRequest = state.networkRequests.find(({ id }) => id === state.selectedId);
+	const networkRequests = filterNetworks(state.networkRequests, state.search);
 
 	return (
 		<DevToolsNetworkContext.Provider
@@ -97,7 +109,12 @@ export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
 				onStartRecording,
 				onStopRecording,
 				onClearNetworks,
-				state: { ...state, selectedNetworkRequest }
+				onSetSearch,
+				state: {
+					...state,
+					selectedNetworkRequest,
+					networkRequests
+				}
 			}}>
 			{children}
 		</DevToolsNetworkContext.Provider>
@@ -105,3 +122,11 @@ export const DevToolsNetworkProvider = ({ children }: PropsWithChildren) => {
 };
 
 export const useDevToolsNetwork = () => useContext(DevToolsNetworkContext);
+
+const filterNetworks = (networks: GrpcNetworkPartial[], search: string) => {
+	if (!search) {
+		return networks;
+	}
+
+	return networks.filter(({ url }) => url.toLocaleLowerCase().includes(search.toLocaleLowerCase()));
+};

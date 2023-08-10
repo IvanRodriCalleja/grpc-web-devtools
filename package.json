@@ -28,6 +28,7 @@
     "react-dom": "^18.2.0",
     "react-resizable-panels": "^0.0.54",
     "react18-json-view": "^0.1.0",
+    "use-debounce": "^9.0.4",
     "webextension-polyfill": "^0.10.0"
   },
   "devDependencies": {

@@ -1,6 +1,7 @@
 import { css } from '@panda/css';
 
 import { ClearNetworks } from './toolbar/ClearNetworks';
+import { InputSearch } from './toolbar/InputSearch';
 import { RecordNetwork } from './toolbar/RecordNetwork';
 
 const header = css({
@@ -17,6 +18,7 @@ export const Toolbar = () => {
 		<header className={header}>
 			<RecordNetwork />
 			<ClearNetworks />
+			<InputSearch />
 		</header>
 	);
 };
