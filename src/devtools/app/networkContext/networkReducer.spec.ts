@@ -10,7 +10,8 @@ import { networkReducer } from './networkReducer';
 const emptyState: DevToolsNetworkState = {
 	networkRequests: [],
 	selectedId: undefined,
-	isRecording: true
+	isRecording: true,
+	search: ''
 };
 
 const unaryRequestTest: GrpcUnaryRequest = {
@@ -40,7 +41,8 @@ describe('networkReducer', () => {
 				expect(state).toEqual({
 					networkRequests: [action.payload.partial],
 					selectedNetworkRequest: undefined,
-					isRecording: true
+					isRecording: true,
+					search: ''
 				});
 			});
 
@@ -74,7 +76,8 @@ describe('networkReducer', () => {
 				expect(state).toEqual({
 					networkRequests: [messageOne.payload.partial, messageTwo.payload.partial],
 					selectedNetworkRequest: undefined,
-					isRecording: true
+					isRecording: true,
+					search: ''
 				});
 			});
 		});
@@ -95,14 +98,16 @@ describe('networkReducer', () => {
 
 				const initialState: DevToolsNetworkState = {
 					networkRequests: [unaryRequestTest],
-					isRecording: true
+					isRecording: true,
+					search: ''
 				};
 
 				const state = networkReducer(initialState, message);
 				expect(state).toEqual({
 					networkRequests: [{ ...unaryRequestTest, ...message.payload.partial }],
 					selectedNetworkRequest: undefined,
-					isRecording: true
+					isRecording: true,
+					search: ''
 				});
 			});
 		});
@@ -124,14 +129,16 @@ describe('networkReducer', () => {
 
 			const initialState: DevToolsNetworkState = {
 				networkRequests: [unaryRequestTest],
-				isRecording: true
+				isRecording: true,
+				search: ''
 			};
 
 			const state = networkReducer(initialState, message);
 			expect(state).toEqual({
 				networkRequests: [{ ...unaryRequestTest, ...message.payload.partial }],
 				selectedNetworkRequest: undefined,
-				isRecording: true
+				isRecording: true,
+				search: ''
 			});
 		});
 	});

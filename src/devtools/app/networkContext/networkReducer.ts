@@ -33,13 +33,19 @@ type ClearNetworks = {
 	type: 'clear-networks';
 };
 
+type SetSearch = {
+	type: 'set-search';
+	payload: string;
+};
+
 type Actions =
 	| PartialNetworkAction
 	| SelectedNetworkRequest
 	| CloseNetworkRequest
 	| StartRecording
 	| StopRecording
-	| ClearNetworks;
+	| ClearNetworks
+	| SetSearch;
 
 export const networkReducer = (
 	state: DevToolsNetworkState,
@@ -161,6 +167,11 @@ export const networkReducer = (
 			return {
 				...state,
 				networkRequests: []
+			};
+		case 'set-search':
+			return {
+				...state,
+				search: action.payload
 			};
 
 		default:

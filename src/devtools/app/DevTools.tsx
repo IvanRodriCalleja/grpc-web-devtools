@@ -1,6 +1,6 @@
 import { css } from '@panda/css';
 
-import { DevToolsNetworkProvider, useDevToolsNetwork } from './DevToolsNetworkContext';
+import { useDevToolsNetwork } from './DevToolsNetworkContext';
 import { DevToolsPanels } from './devTools/DevToolsPanels';
 import { EmptyNetwork } from './devTools/EmptyNetwork';
 import { Toolbar } from './devTools/Toolbar';
@@ -21,14 +21,13 @@ export const DevTools = () => {
 	const {
 		state: { networkRequests }
 	} = useDevToolsNetwork();
+
 	return (
 		<div className={devtoolsContainer}>
-			<DevToolsNetworkProvider>
-				<Toolbar />
-				<main className={main}>
-					{networkRequests.length === 0 ? <EmptyNetwork /> : <DevToolsPanels />}
-				</main>
-			</DevToolsNetworkProvider>
+			<Toolbar />
+			<main className={main}>
+				{networkRequests.length === 0 ? <EmptyNetwork /> : <DevToolsPanels />}
+			</main>
 		</div>
 	);
 };
