@@ -27,7 +27,8 @@ export const sendStreamNetworkRequestMessageArgs = ({
 			partial: {
 				id: networkId,
 				type: 'stream',
-				url: request.getMethodDescriptor().getName(),
+				//@ts-ignore
+				url: request.getMethodDescriptor().name || request.getMethodDescriptor().getName(),
 				request: {
 					body: request.getRequestMessage().toObject(),
 					metadata: request.getMetadata()
