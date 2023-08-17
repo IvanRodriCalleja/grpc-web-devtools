@@ -1,1 +1,1 @@
-chrome.devtools.panels.create('grpc-web', '', 'devtools/panel.html');
+chrome.devtools.panels.create('grpc-web', '', '/devtools/panel.html');

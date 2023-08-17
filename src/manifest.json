@@ -1,6 +1,6 @@
 {
   "name": "grpc-web-devtools",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Chrome extension for gRPC-Web to inspect requests and responses in human readable format",
   "manifest_version": 3,
   "content_scripts": [
