@@ -5,11 +5,13 @@ import { copy } from 'esbuild-plugin-copy';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
+import { manifestToV2 } from './esbuild/manifestToV2.js';
+
 const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = path.dirname(__filename);
 
-console.log({ env: process.env.NODE_ENV });
+const browsersWithManifestV2 = ['firefox'];
 
 build({
 	entryPoints: [
@@ -19,6 +21,7 @@ build({
 		'./src/devtools/devtools.tsx',
 		'./src/devtools/app/index.tsx'
 	],
+
 	bundle: true,
 	minify: true,
 	sourcemap: process.env.NODE_ENV !== 'production',
@@ -45,14 +48,19 @@ build({
 			},
 			watch: true
 		}),
-		copy({
-			resolveFrom: 'cwd',
-			assets: {
-				from: ['./src/manifest.json'],
-				to: [`./${process.env.BROWSER}/build`]
-			},
-			watch: true
-		}),
+		browsersWithManifestV2.includes(process.env.BROWSER)
+			? manifestToV2({
+					path: path.resolve(__dirname, './src/manifest.json'),
+					out: path.resolve(__dirname, `./${process.env.BROWSER}/build/manifest.json`)
+			  })
+			: copy({
+					resolveFrom: 'cwd',
+					assets: {
+						from: ['./src/manifest.json'],
+						to: [`./${process.env.BROWSER}/build`]
+					},
+					watch: true
+			  }),
 		postCssPlugin({
 			plugins: [pandaCssPlugin]
 		})
@@ -60,4 +68,7 @@ build({
 	alias: {
 		'@panda/css': path.resolve(__dirname, './src/devtools/styled-system/css/index.mjs')
 	}
-}).catch(() => process.exit(1));
+}).catch(error => {
+	console.log({ error });
+	process.exit(1);
+});

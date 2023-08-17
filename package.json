@@ -8,9 +8,12 @@
   "scripts": {
     "prepare": "panda codegen",
     "dev:chrome": "cross-env BROWSER=chrome concurrently \"yarn dev:example\" \"yarn build:extension\" \"yarn launch:chrome\"",
+    "dev:firefox": "cross-env BROWSER=firefox concurrently \"yarn dev:example\" \"yarn build:extension\" \"yarn launch:firefox\"",
     "build:chrome:pro": "cross-env BROWSER=chrome yarn build:extension",
+    "build:firefox:pro": "cross-env BROWSER=firefox yarn build:extension",
     "prettier": "prettier --write '**/*.{js,jsx,css,html}'",
     "launch:chrome": "node ./chrome/dev.js",
+    "launch:firefox": "node ./firefox/dev.js",
     "tsc": "tsc",
     "lint": "eslint src --ext .ts,.tsx --quiet --cache",
     "test": "vitest",

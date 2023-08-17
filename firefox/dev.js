@@ -9,9 +9,8 @@ const EXTENSION_PATH = resolve(__dirname, './build');
 const START_URL = 'http://localhost:3000';
 
 const launchBrowser = async () => {
-	console.log('Running chrome browser...');
+	console.log('Running firefox browser...');
 	const options = [
-		'--target=chromium',
 		`--source-dir=${EXTENSION_PATH}`,
 		`--start-url=${START_URL}`,
 		'--devtools',
